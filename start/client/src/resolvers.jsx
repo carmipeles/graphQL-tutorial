@@ -17,12 +17,6 @@ export const typeDefs = gql`
   }
 `;
 
-export const schema = gql`
-  extend type Launch {
-    isInCart: Boolean!
-  }
-`;
-
 export const resolvers = {
   Launch: {
     isInCart: (launch, _, { cache }) => {
