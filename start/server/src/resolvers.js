@@ -35,6 +35,9 @@ module.exports = {
         me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
     },
     Mutation: {
+        createEvent: async (parent, {}, {dataSources}) => {
+            dataSources
+        },
         login: async (_, { email }, { dataSources }) => {
             console.log(email, dataSources)
             const user = await dataSources.userAPI.findOrCreateUser({ email });

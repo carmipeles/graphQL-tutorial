@@ -67,3 +67,43 @@ module.exports.createStore = () => {
 
   return { users, trips };
 };
+
+module.exports.createPostges = () => {
+  const Op = SQL.Op;
+  const operatorsAliases = {
+    $in: Op.in,
+  };
+
+  const postgres = new SQL('database', 'username', 'password');
+  postgres.authenticate()
+  .then(() => console.log("connected to Postgres"))
+  .catch((err) => console.error("unable to connect postges", err));
+
+  const events = postgres.define("Event", {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    createdAt: SQL.DATE,
+    updatedAt: SQL.DATE,
+    expiredAt: SQL.TIME,
+    reporter: SQL.STRING,
+    severity: SQL.INTEGER,
+    title: SQL.STRING,
+    annotation: SQL.TEXT
+  });
+  const status = postgres.define("Status", {
+    id: {
+      type: SQL.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    text: SQL.STRING
+  });
+
+  events.hasOne(status);
+  status.belongsTo(events);
+  
+  return { events };
+};
